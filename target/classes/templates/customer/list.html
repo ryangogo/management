@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="base/common :: commonHead"></head>
+	<body class="no-skin">
+		<div class="main-container ace-save-state" id="main-container">
+			<script type="text/javascript">
+				try{ace.settings.loadState('main-container')}catch(e){}
+			</script>
+			<div class="main-content">
+				<div class="main-content-inner">
+					<div class="page-content">
+						<div class="ace-settings-container" id="ace-settings-container">
+							<div class="btn btn-app btn-xs btn-warning ace-settings-btn" id="ace-settings-btn">
+								<i class="ace-icon fa fa-cog bigger-130"></i>
+							</div>
+
+							<div class="ace-settings-box clearfix" id="ace-settings-box">
+								<div class="pull-left width-50">
+									<div class="ace-settings-item">
+										<div class="pull-left">
+											<select id="skin-colorpicker" class="hide">
+												<option data-skin="no-skin" value="#438EB9">#438EB9</option>
+												<option data-skin="skin-1" value="#222A2D">#222A2D</option>
+												<option data-skin="skin-2" value="#C6487E">#C6487E</option>
+												<option data-skin="skin-3" value="#D0D0D0">#D0D0D0</option>
+											</select>
+										</div>
+										<span>&nbsp; Choose Skin</span>
+									</div>
+
+									<div class="ace-settings-item">
+										<input type="checkbox" class="ace ace-checkbox-2 ace-save-state" id="ace-settings-navbar" autocomplete="off" />
+										<label class="lbl" for="ace-settings-navbar"> Fixed Navbar</label>
+									</div>
+
+									<div class="ace-settings-item">
+										<input type="checkbox" class="ace ace-checkbox-2 ace-save-state" id="ace-settings-sidebar" autocomplete="off" />
+										<label class="lbl" for="ace-settings-sidebar"> Fixed Sidebar</label>
+									</div>
+
+									<div class="ace-settings-item">
+										<input type="checkbox" class="ace ace-checkbox-2 ace-save-state" id="ace-settings-breadcrumbs" autocomplete="off" />
+										<label class="lbl" for="ace-settings-breadcrumbs"> Fixed Breadcrumbs</label>
+									</div>
+
+									<div class="ace-settings-item">
+										<input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-rtl" autocomplete="off" />
+										<label class="lbl" for="ace-settings-rtl"> Right To Left (rtl)</label>
+									</div>
+
+									<div class="ace-settings-item">
+										<input type="checkbox" class="ace ace-checkbox-2 ace-save-state" id="ace-settings-add-container" autocomplete="off" />
+										<label class="lbl" for="ace-settings-add-container">
+											Inside
+											<b>.container</b>
+										</label>
+									</div>
+								</div><!-- /.pull-left -->
+
+								<div class="pull-left width-50">
+									<div class="ace-settings-item">
+										<input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-hover" autocomplete="off" />
+										<label class="lbl" for="ace-settings-hover"> Submenu on Hover</label>
+									</div>
+
+									<div class="ace-settings-item">
+										<input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-compact" autocomplete="off" />
+										<label class="lbl" for="ace-settings-compact"> Compact Sidebar</label>
+									</div>
+
+									<div class="ace-settings-item">
+										<input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-highlight" autocomplete="off" />
+										<label class="lbl" for="ace-settings-highlight"> Alt. Active Item</label>
+									</div>
+								</div><!-- /.pull-left -->
+							</div><!-- /.ace-settings-box -->
+						</div><!-- /.ace-settings-container -->
+
+						<div class="page-header">
+							<h1>
+								客户信息列表
+<!--								<small>-->
+<!--									<i class="ace-icon fa fa-angle-double-right"></i>-->
+<!--									Static &amp; Dynamic Tables-->
+<!--								</small>-->
+							</h1>
+						</div><!-- /.page-header -->
+
+						<div class="row">
+							<div class="col-sm-12">
+								<div class="widget-box">
+									<div class="widget-header">
+										<h4 class="widget-title">客户信息查询条件</h4>
+									</div>
+
+									<div class="widget-body">
+										<div class="widget-main no-padding">
+											<form id="listForm" action="/customer/list" method="post">
+												<!-- <legend>Form</legend> -->
+												<fieldset>
+												<input type="hidden" id="pageNum" name="pageNum" th:value="${pageNum}"/>
+														<label>省</label>
+														<input type="text" class="province" name="province" th:value="${pageInfo.province}" placeholder="客户所在省份&hellip;" />
+														<label style="padding-left :15px">市</label>
+														<input type="text" name="city" th:value="${pageInfo.city}" placeholder="客户所在城市&hellip;" />
+														<label style="padding-left :15px">区域</label>
+														<input type="text" name="area" th:value="${pageInfo.area}" placeholder="客户所在区域&hellip;" />
+														<label style="padding-left :15px">村</label>
+														<input type="text" name="village" th:value="${pageInfo.village}" placeholder="客户所在村&hellip;" />
+														<label style="padding-left :15px">公司</label>
+														<input type="text" name="companyName" th:value="${pageInfo.companyName}" placeholder="客户公司名称&hellip;" />
+														<label style="padding-left :15px">联系人</label>
+														<input type="text" name="liaisonMan" th:value="${pageInfo.liaisonMan}" placeholder="客户公司联系人&hellip;" />
+												</fieldset>
+												<div class="form-actions align-right">
+													<a href="#modal-table" id="addCustomerA" role="button" data-toggle="modal"></a>
+													<button onclick="jumpCustomerEditor()" type="button" class="btn btn-sm btn-success">
+															新增
+													<i class="ace-icon fa fa-arrow-right icon-on-right bigger-110"></i>
+													</button>
+													<button type="button" id="selectFormButton" onclick="list()" class="btn btn-sm btn-success" style="margin-right: 50px">
+															查询
+													<i class="ace-icon glyphicon glyphicon-search icon-on-right bigger-110"></i>
+													</button>
+												</div>
+											</form>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="hr hr-18 dotted hr-double"></div>
+
+							<div class="row">
+						<div class="col-xs-12">
+						<!-- PAGE CONTENT BEGINS -->
+						<div class="row">
+						<div class="col-xs-12">
+						<table id="simple-table" class="table  table-bordered table-hover">
+						<thead>
+						<tr>
+						<th>
+						省
+						</th>
+						<th>市</th>
+						<th class="hidden-480">
+						区/乡
+						</th>
+						<th>
+						村
+						</th>
+						<th class="hidden-480">公司名称</th>
+						<th><i class="ace-icon fa fa-users bigger-110 hidden-480"></i>联系人</th>
+				<th><i class="ace-icon fa fa-phone bigger-110 hidden-480"></i>联系人电话</th>
+				<th>创建日期</th>
+				<th>备注</th>
+				<th></th>
+				</tr>
+				</thead>
+
+				<tbody>
+				<!--用户信息列表开始-->
+				<div th:each="customer:${customers.list}">
+						<tr>
+
+						<td style="display:none" th:text="${customer.id}"></td>
+						<!--省-->
+						<td th:text="${customer.province}"></td>
+						<!--市-->
+						<td th:text="${customer.city}"></td>
+						<!--区/乡镇-->
+						<td class="hidden-480" th:text="${customer.area}"></td>
+						<!--村-->
+						<td th:text="${customer.village}"></td>
+						<!--公司名称-->
+						<td th:text="${customer.companyName}"></td>
+						<!--联系人-->
+						<td th:text="${customer.liaisonMan}"></td>
+						<!--联系人电话-->
+						<td th:text="${customer.liaisonPhone}"></td>
+						<!--创建日期-->
+						<td th:text="${#dates.format(customer.createDate, 'yyyy年MM月dd日')}"></td>
+						<!--备注-->
+						<!--													<td th:text="${customer.remark}"></td>-->
+						<td>
+						<span onmouseover="showRemark($(this))" th:text="${#strings.length(customer.remark) > 15? #strings.substring(customer.remark,0,15) + '......' : customer.remark}"></span>
+						<input type="text" style="display: none" th:value="${customer.remark}">
+						</td>
+						<td>
+						<div class="hidden-sm hidden-xs btn-group" >
+						<a href="#modal-table" role="button" onclick="setCustomerEditor($(this))"  class="btn btn-xs btn-info" data-toggle="modal" >
+						<i class="ace-icon fa fa-pencil bigger-120"></i>
+						</a>
+
+						</div>
+
+						<div class="hidden-md hidden-lg">
+						<div class="inline pos-rel">
+						<button class="btn btn-minier btn-primary dropdown-toggle" data-toggle="dropdown" data-position="auto">
+						<i class="ace-icon fa fa-cog icon-only bigger-110"></i>
+						</button>
+
+						<ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
+						<li>
+						<a href="#" class="tooltip-info" data-rel="tooltip" title="View">
+						<span class="blue">
+						<i class="ace-icon fa fa-search-plus bigger-120"></i>
+						</span>
+						</a>
+						</li>
+
+						<li>
+						<a href="#" class="tooltip-success" data-rel="tooltip" title="Edit">
+						<span class="green">
+						<i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
+						</span>
+						</a>
+						</li>
+
+						<li>
+						<a href="#" class="tooltip-error" data-rel="tooltip" title="Delete">
+						<span class="red">
+						<i class="ace-icon fa fa-trash-o bigger-120"></i>
+						</span>
+						</a>
+						</li>
+						</ul>
+						</div>
+						</div>
+						</td>
+						</tr>
+						</div>
+						</tbody>
+						</table>
+						<div id="myPage" align="right" class="demo"></div>
+						</div><!-- /.span -->
+						</div><!-- /.row -->
+
+						<div class="hr hr-18 dotted hr-double"></div>
+						<div th:replace="innerhtmls/customer_edit :: edit_customer"></div>
+						<!-- PAGE CONTENT ENDS -->
+						</div><!-- /.col -->
+						</div><!-- /.row -->
+						</div><!-- /.page-content -->
+						</div>
+						</div><!-- /.main-content -->
+						<a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
+						<i class="ace-icon fa fa-angle-double-up icon-only bigger-110"></i>
+						</a>
+						</div><!-- /.main-container -->
+						<div th:include="base/common :: commonJs"></div>
+						<!-- inline scripts related to this page -->
+			<script th:inline="javascript">
+			var validator;
+			jQuery(function($) {
+				/******初始化分页******/
+				$("#myPage").sPage({
+					page:[[${pageNum}]],//当前页码，必填
+					total:[[${customers.total}]],//数据总条数，必填
+					pageSize:10,//每页显示多少条数据，默认10条
+					showTotal:true,//是否显示总条数，默认关闭：false
+					totalTxt:"共{total}条",//数据总条数文字描述，{total}为占位符，默认"共{total}条"
+					noData: false,//没有数据时是否显示分页，默认false不显示，true显示第一页
+					showSkip:true,//是否显示跳页，默认关闭：false
+					showPN:true,//是否显示上下翻页，默认开启：true
+					prevPage:"上一页",//上翻页文字描述，默认“上一页”
+					nextPage:"下一页",//下翻页文字描述，默认“下一页”
+					fastForward: 5,//快进快退页数，默认0表示不开启快进快退
+					backFun:function(page){
+						//点击分页按钮回调函数，返回当前页码
+						$('#pageNum').val(page);
+						$('#listForm').submit()
+					}
+				});
+
+				/******textarea控制字数******/
+				$('textarea.limited').inputlimiter({
+					remText: '还可输入%n个字符',
+					limitText: '最大可输入数 : %n.'
+				});
+
+				/******加载表单验证以及表单提交插件******/
+				validateFrm(); bindFrmSub();
+
+			});
+
+
+			/******跳转到编辑页面******/
+			function jumpCustomerEditor() {
+				/******重置validator******/
+				validator.resetForm();
+				/******清空form表单中所有的值******/
+				clearForm("customerEditForm");
+				$('#addCustomerA').click();
+			}
+			/******弹出层 说明鼠标悬浮处的用处******/
+			function showRemark(node){
+				// var remark = node.children('input').eq(0).val();
+				var remark = node.parent().children('input').eq(0).val();
+				if (remark.length > 15){
+					layer.tips(remark, node,{
+						// tips: [1, '#0FA6D8']
+						tips: 1
+					});
+				}
+
+			}
+
+			/******为编辑页面赋值******/
+			function setCustomerEditor(node){
+				/******重置validator******/
+				validator.resetForm();
+				/******清空form表单中所有的值******/
+				clearForm("customerEditForm");
+				var id = node.parent().parent().parent().children('td').eq(0).html();
+				var province = node.parent().parent().parent().children('td').eq(1).html();
+				var city = node.parent().parent().parent().children('td').eq(2).html();
+				var area = node.parent().parent().parent().children('td').eq(3).html();
+				var village = node.parent().parent().parent().children('td').eq(4).html();
+				var companyName = node.parent().parent().parent().children('td').eq(5).html();
+				var liaisonMan = node.parent().parent().parent().children('td').eq(6).html();
+				var liaisonPhone = node.parent().parent().parent().children('td').eq(7).html();
+				var remark = node.parent().parent().parent().children('td').eq(9).children('input').eq(0).val();
+				$('#customerId').val(id);
+				$('#province').val(province);
+				$('#city').val(city);
+				$('#area').val(area);
+				$('#village').val(village);
+				$('#companyName').val(companyName);
+				$('#liaisonMan').val(liaisonMan);
+				$('#liaisonPhone').val(liaisonPhone);
+				$('#remark').val(remark);
+				registerACCity();
+				registerACArea();
+				registerACVillage();
+			}
+
+			function list() {
+				$('#listForm').submit()
+			};
+
+			/******** 绑定jqueryform ********/
+			function bindFrmSub() {
+				$("#submitForm").click(function () {
+					//防止连击 在第一次点击的时候就将其设置为不可使用状态
+					$("#submitForm").attr('disabled',true);
+					/******注册jqueryForm的表单******/
+					if (validator.form()) {
+						$("#customerEditForm").ajaxSubmit({
+							success: function (msg) {
+								//提交错误
+								if (msg.status === 1) {
+									layer.alert(msg.msg, {icon: 5});
+									$("#submitForm").attr('disabled',false);
+								//提交正确
+								} else {
+									layer.msg(msg.msg, {icon: 6,time : 500},function () {
+										$('#selectFormButton').click();
+									});
+								}
+							}
+						});
+					} else {
+						//提交被验证插件拦截 则使button恢复正常
+						$("#submitForm").attr('disabled',false);
+					}
+					return false;
+				});
+			}
+
+			/******表单提交校验******/
+			function validateFrm() {
+				validator = $("#customerEditForm")
+						.validate({
+							errorClass: 'validate-error',
+							rules :{
+								province:{
+									maxlength : 10
+								},
+								city:{
+									maxlength : 10
+								},
+								area:{
+									maxlength : 10
+								},
+								village:{
+									maxlength : 10
+								},
+								companyName:{
+									maxlength : 30,
+									remote: {
+										url: '/customer/validateCompanyName',
+										data: {
+											companyName: function () {
+												return $('#companyName').val();
+											},
+											customerId: function () {
+												return $('#customerId').val();
+											}
+										}
+									}
+								},
+								liaisonMan:{
+									maxlength : 30
+								},
+								liaisonPhone:{
+									isPhone : true,
+									remote: {
+										url: '/customer/validateLiaisonPhone',
+										data: {
+											phoneNum: function () {
+												return $('#liaisonPhone').val();
+											},
+											customerId: function () {
+												return $('#customerId').val();
+											}
+										}
+									}
+								}
+							},
+							messages: {
+								province:{
+									maxlength : "最大长度不可超过10个字"
+								},
+								city:{
+									maxlength : "最大长度不可超过10个字"
+								},
+								area:{
+									maxlength : "最大长度不可超过10个字"
+								},
+								village:{
+									maxlength : "最大长度不可超过10个字"
+								},
+								companyName:{
+									maxlength : "最大长度不可超过30个字",
+									remote : "公司名称已存在"
+								},
+								liaisonMan : {
+									required : "请填写联系人",
+									maxlength : "最大长度不可超过10个字"
+								},
+								liaisonPhone:{
+									required : "请填写联系人电话",
+									isPhone : "请填写正确的手机号码",//目前只能是手机号
+									remote : "该手机号码已存在"
+								}
+							}
+							// errorClass: 'validate-error',
+							// rules: {
+							// 	mouldNum: {
+							// 		checkChinese: true
+							// 	},
+							// 	location: {
+							// 		checkChinese2: true
+							// 	}
+							// },
+						});
+			}
+
+		</script>
+	</body>
+</html>
